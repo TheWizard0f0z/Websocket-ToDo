@@ -45,17 +45,6 @@ class App extends React.Component {
     this.setState({ tasks: updatedTasks });
   }
 
-  // add task second way - for learning
-  /*
-  addTask(newTask) {
-    if (!this.state.tasks.find(task => task.id === newTask.id)) {
-      this.state.tasks.push(newTask);
-      this.setState(this.state.tasks);
-    }
-  }
-  */
-
-  // remove task first way
   removeTask(id, emitted) {
     const updatedTasks = [...this.state.tasks]; // make a separate copy of the array
 
@@ -67,28 +56,6 @@ class App extends React.Component {
     this.setState({ tasks: updatedTasks });
     if (!emitted) this.socket.emit('removeTask', id);
   }
-
-  // remove task second way - for learning
-  /*
-  removeTask(id) {
-    const updatedTasks = this.state.tasks.filter(task => task.id !== id);
-    this.setState({ tasks: updatedTasks });
-
-    this.socket.emit('removeTask', id);
-  }
-  */
-
-  // remove task third way - for learning
-  /* 
-  removeTask(event, task) {
-    const index = this.state.tasks.indexOf(task);
-
-    if (this.state.tasks.find(deleteTask => deleteTask.id === task.id)) {
-      this.setState(this.state.tasks.splice(index, 1));
-      this.socket.emit('removeTask', index, task);
-    }
-  }
-  */
 
   async changeValue(event) {
     await this.setState({
