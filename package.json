@@ -1,0 +1,15 @@
+{
+  "name": "websocket-todo",
+  "version": "1.0.0",
+  "main": "server.js",
+  "repository": "https://github.com/TheWizard0f0z/Websocket-ToDo.git",
+  "author": "Marcin Dzieszkowski <m.dzieszkowski@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "nodemon server.js"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "nodemon": "^2.0.2"
+  }
+}
