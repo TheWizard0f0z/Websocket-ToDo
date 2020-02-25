@@ -44,15 +44,14 @@ class App extends React.Component {
   addTask(newTask) {
     const updatedTasks = [...this.state.tasks, newTask]; // make a separate copy of the array
 
-    //updatedTasks.push(newTask);
     this.setState({ tasks: updatedTasks });
   }
 
   removeTask(id, emitted) {
-    const updatedTasks = this.state.tasks.filter(task => {
-      return task.id !== id;
-    });
+    const updatedTasks = this.state.tasks.filter(task => task.id !== id);
+
     this.setState({ tasks: updatedTasks });
+
     if (!emitted) this.socket.emit('removeTask', id);
   }
 
