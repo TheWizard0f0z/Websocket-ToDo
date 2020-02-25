@@ -8,7 +8,7 @@ class App extends React.Component {
 
     this.state = {
       tasks: [],
-      taskName: {}
+      taskName: ''
     };
 
     this.submitForm = this.submitForm.bind(this);
@@ -34,36 +34,30 @@ class App extends React.Component {
 
   submitForm(event) {
     event.preventDefault();
-    this.addTask(this.state.taskName);
-    this.socket.emit('addTask', this.state.taskName);
+
+    const newTask = { id: uuidv4(), name: this.state.taskName };
+
+    this.addTask(newTask);
+    this.socket.emit('addTask', newTask);
   }
 
   addTask(newTask) {
-    const updatedTasks = [...this.state.tasks]; // make a separate copy of the array
+    const updatedTasks = [...this.state.tasks, newTask]; // make a separate copy of the array
 
-    updatedTasks.push(newTask);
+    //updatedTasks.push(newTask);
     this.setState({ tasks: updatedTasks });
   }
 
   removeTask(id, emitted) {
-    const updatedTasks = [...this.state.tasks]; // make a separate copy of the array
-
-    updatedTasks.forEach((task, index) => {
-      if (task.id === id) {
-        updatedTasks.splice(index, 1);
-      }
+    const updatedTasks = this.state.tasks.filter(task => {
+      return task.id !== id;
     });
     this.setState({ tasks: updatedTasks });
     if (!emitted) this.socket.emit('removeTask', id);
   }
 
-  async changeValue(event) {
-    await this.setState({
-      taskName: {
-        id: uuidv4(),
-        name: event.target.value
-      }
-    });
+  changeValue(event) {
+    this.setState({ taskName: event.target.value });
   }
 
   render() {
@@ -80,9 +74,7 @@ class App extends React.Component {
             {this.state.tasks.map(task => (
               <li key={task.id} className='task'>
                 {task.name}
-                <button
-                  onClick={() => this.removeTask(task.id)}
-                  className='btn btn--red'>
+                <button onClick={() => this.removeTask(task.id)} className='btn btn--red'>
                   Remove
                 </button>
               </li>
@@ -96,7 +88,7 @@ class App extends React.Component {
               type='text'
               placeholder='Type your description'
               id='task-name'
-              value={this.state.taskName.name}
+              value={this.state.taskName}
               onChange={this.changeValue}
             />
             <button className='btn' type='submit'>
